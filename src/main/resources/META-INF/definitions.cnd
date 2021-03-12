@@ -1,2 +1,11 @@
+<bootstrapiconsmix = 'http://www.jahia.org/bootstrapicons/mix/1.0'>
+<bootstrapiconsnt = 'http://www.jahia.org/bootstrapicons/nt/1.0'>
 <jnt = 'http://www.jahia.org/jahia/nt/1.0'>
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+
+[bootstrapiconsmix:component] > jmix:droppableContent, jmix:editorialContent mixin
+
+[bootstrapiconsnt:icon] > jnt:content, bootstrapiconsmix:component
+ - bootstrapIcon (string, choicelist[bootstrapIconInitializer,moduleImage='svg']) indexed=no
+ - useIconFont (boolean) = "false" indexed=no
+

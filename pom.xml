@@ -66,6 +66,14 @@
         <developerConnection>scm:dummy:uri</developerConnection>
     </scm>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
     <repositories>
         <repository>
             <id>jahia-public</id>
@@ -90,6 +98,10 @@
                 <configuration>
                     <instructions>
                         <Jahia-Depends>default</Jahia-Depends>
+                        <Export-Package>org.jahiacommunity.modules.bootstrap.icons.initializers</Export-Package>
+                        <_dsannotations>
+                            org.jahiacommunity.modules.bootstrap.icons.initializers.BootstrapIconInitializer
+                        </_dsannotations>
                     </instructions>
                 </configuration>
             </plugin>

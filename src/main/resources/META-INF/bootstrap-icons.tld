@@ -13,6 +13,6 @@
         <description>Get SVG</description>
         <name>getSvg</name>
         <function-class>org.jahiacommunity.modules.bootstrap.icons.Functions</function-class>
-        <function-signature>java.lang.String getSvg(java.lang.String)</function-signature>
+        <function-signature>java.lang.String getSvg(java.lang.String,java.lang.String)</function-signature>
     </function>
 </taglib>

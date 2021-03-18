@@ -5,7 +5,14 @@
 
 [bootstrapiconsmix:component] > jmix:droppableContent, jmix:editorialContent mixin
 
+[bootstrapiconsmix:iconWidth] > jmix:templateMixin mixin
+ extends = bootstrapiconsnt:icon
+ - iconWidth (string, choicelist[resourceBundle]) = 'auto' autocreated indexed=no < 'auto', '100', '75', '50', '25'
+
+[bootstrapiconsmix:fontSize] > jmix:templateMixin mixin
+ extends = bootstrapiconsnt:icon
+ - fontSize (string, choicelist[resourceBundle]) = 'default' autocreated < 'default','xs','sm','lg','2','3','4','5','6','6','8','9','10'
+
 [bootstrapiconsnt:icon] > jnt:content, bootstrapiconsmix:component
  - bootstrapIcon (string, choicelist[bootstrapIconInitializer,moduleImage='svg']) indexed=no
- - useIconFont (boolean) = "false" indexed=no
-
+ - usage (string, choicelist[usageInitializer,resourceBundle]) = 'embedded' autocreated indexed=no

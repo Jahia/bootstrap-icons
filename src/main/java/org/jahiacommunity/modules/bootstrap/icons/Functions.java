@@ -19,12 +19,14 @@ public class Functions {
     public static String getSvg(String name, String style) {
         try {
             String html = IOUtils.toString(new ClassPathResource(String.format("img/%s.svg", name)).getInputStream());
+            //Element doc = Jsoup.parseBodyFragment(html);
             Document doc = Jsoup.parseBodyFragment(html);
-            doc.select("svg").removeAttr("width").removeAttr("height");
+            Element svgElement = doc.selectFirst("svg");
+            svgElement.removeAttr("width").removeAttr("height");
             if (! "auto".equals(style)) {
-                doc.select("svg").attr("style", style);
+                svgElement.attr("style", style);
             }
-            return doc.html();
+            return svgElement.outerHtml();
         } catch (IOException e) {
             logger.error("Could not get SVG", e);
             return StringUtils.EMPTY;

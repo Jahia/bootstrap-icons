@@ -28,7 +28,7 @@
         ${bi:getSvg(bootstrapIcon,widthStyle)}
     </c:when>
     <c:when test="${usage eq 'sprite'}">
-        <svg class="bi" fill="currentColor" style="${widthStyle}">
+        <svg class="bi" fill="currentColor" style="${widthStyle}" viewbox="0 0 16 16">
             <use xlink:href="${url.currentModule}/icons/bootstrap-icons.svg#${bootstrapIcon}"/>
         </svg>
     </c:when>

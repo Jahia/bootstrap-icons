@@ -13,14 +13,14 @@ import org.jahia.services.render.RenderContext;
 import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
-import java.io.File;
-import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 
 @Component(name = "bootstrapIconInitializer", service = ModuleChoiceListInitializer.class, immediate = true)
-public class BootstrapIconInitializer  extends AbstractChoiceListRenderer implements ModuleChoiceListInitializer, ModuleChoiceListRenderer {
+public class BootstrapIconInitializer extends AbstractChoiceListRenderer implements ModuleChoiceListInitializer, ModuleChoiceListRenderer {
 
     private static final Logger logger = LoggerFactory.getLogger(BootstrapIconInitializer.class);
 
@@ -31,18 +31,14 @@ public class BootstrapIconInitializer  extends AbstractChoiceListRenderer implem
         final JahiaTemplatesPackage templatesPackage = ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageById(
                 epd.getDeclaringNodeType().getSystemId());
 
-        try {
-            File img = templatesPackage.getResource("img").getFile();
-            for (File f : img.listFiles()) {
-                String fileName = f.getName();
-                if (fileName.endsWith(".svg")) {
-                    String icon = fileName.substring(0, fileName.length() - 4);
-                    results.add(new ChoiceListValue(WordUtils.capitalize(icon.replaceAll("-"," ")), icon));
-                }
-            }
-        } catch (IOException e) {
-            logger.error("Could not get img dir " + e.getMessage());
+        Enumeration el = templatesPackage.getBundle().findEntries("/img", "*.svg", false);
+        while (el.hasMoreElements()) {
+            String fileName = ((URL) el.nextElement()).getPath();
+            logger.debug("found svg " + fileName);
+            String icon = fileName.substring(5, fileName.length() - 4);
+            results.add(new ChoiceListValue(WordUtils.capitalize(icon.replaceAll("-"," ")), icon));
         }
+
         Collections.sort(results);
 
         return results;

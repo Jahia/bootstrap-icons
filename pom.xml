@@ -56,7 +56,7 @@
     <name>Bootstrap icons</name>
     <version>1.0.5-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <description>This is a Jahia 8 implementation of the free, high-quality, open-source icon library with over 1,300 icons. Icons can be embed, used as an external SVGs image or SVG sprite, or as a web font</description>
+    <description>This is a Jahia 8 implementation of the free, high-quality, open-source icon library with over 1,400 icons. Icons can be embed, used as an external SVGs image or SVG sprite, or as a web font</description>
 
     <scm>
         <connection>scm:git:git@github.com:Jahia/bootstrap-icons.git</connection>

@@ -54,7 +54,7 @@
     <groupId>org.jahiacommunity.modules</groupId>
     <artifactId>bootstrap-icons</artifactId>
     <name>Bootstrap icons</name>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.0.5</version>
     <packaging>bundle</packaging>
     <description>This is a Jahia 8 implementation of the free, high-quality, open-source icon library with over 1,400 icons. Icons can be embed, used as an external SVGs image or SVG sprite, or as a web font</description>
 
@@ -62,7 +62,7 @@
         <connection>scm:git:git@github.com:Jahia/bootstrap-icons.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/bootstrap-icons.git</developerConnection>
         <url>https://github.com/Jahia/bootstrap-icons.git</url>
-        <tag>HEAD</tag>
+        <tag>bootstrap-icons-1.0.5</tag>
     </scm>
 
     <dependencies>

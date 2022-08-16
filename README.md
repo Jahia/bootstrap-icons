@@ -1,6 +1,6 @@
 # Bootstrap Icons
 
-> This is a Jahia 8 implementation of the free, high-quality, open-source icon library with over 1,500 icons. Icons can be embed, used as an external SVGs image or SVG sprite, or as a web font.
+> This is a Jahia 8 implementation of the free, high-quality, open-source icon library with over 1,800 icons. Icons can be embed, used as an external SVGs image or SVG sprite, or as a web font.
 
 ## Installation
 Please read the dedicated tutorial on https://academy.jahia.com/training-kb/tutorials/administrators/installing-a-module and select the Bootstrap Icons module from the store.

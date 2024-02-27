@@ -76,4 +76,13 @@ Here is an example of sprite usage for the arrow-left icon with a width of 50%:
 </svg>
 ```
 
+### Displaying Icon Font Without Utilizing the Icon Component
+
+If you wish to utilize the font method for displaying icons without employing the icon component, for example, if you want to directly use a tag like `<i class="bi bi-file-earmark-pdf"></i>` within a template or a JSP view, then you'll need to add a dependency (Jahia-Depends) to the bootstrap-icons in your `pom.xml` file. 
+
+Additionally, include the following line in your template:
+
+```html
+<template:addResources type="css" resources="bootstrap-icons.css"/>
+```
 

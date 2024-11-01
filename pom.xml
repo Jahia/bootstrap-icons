@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-
     ==========================================================================================
     =                   JAHIA'S DUAL LICENSING - IMPORTANT INFORMATION                       =
     ==========================================================================================
@@ -44,20 +43,36 @@
         please contact the sales department at sales@jahia.com.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- Model Version -->
     <modelVersion>4.0.0</modelVersion>
+
+    <!-- Parent Project -->
     <parent>
         <artifactId>jahia-modules</artifactId>
         <groupId>org.jahia.modules</groupId>
         <version>8.0.2.0</version>
     </parent>
+
+    <!-- Project Coordinates -->
     <groupId>org.jahiacommunity.modules</groupId>
     <artifactId>bootstrap-icons</artifactId>
-    <name>Bootstrap icons</name>
     <version>1.0.13-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <description>This is a Jahia 8 implementation of the free, high-quality, open-source icon library with over 1,400 icons. Icons can be embed, used as an external SVGs image or SVG sprite, or as a web font</description>
 
+    <!-- Project Name and Description -->
+    <name>Bootstrap Icons</name>
+    <description>
+        This is a Jahia 8 implementation of the free, high-quality, open-source icon library
+        with over 2,000 icons. Icons can be embedded, used as external SVG images or SVG sprites,
+        or as a web font.
+    </description>
+
+    <!-- Source Code Management -->
     <scm>
         <connection>scm:git:git@github.com:Jahia/bootstrap-icons.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/bootstrap-icons.git</developerConnection>
@@ -65,12 +80,16 @@
         <tag>HEAD</tag>
     </scm>
 
+    <!-- Dependencies -->
     <dependencies>
+        <!-- Provided Scope Dependencies -->
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>jsp-api</artifactId>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Compile Scope Dependencies -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
@@ -78,6 +97,7 @@
         </dependency>
     </dependencies>
 
+    <!-- Repositories -->
     <repositories>
         <repository>
             <id>jahia-public</id>
@@ -93,18 +113,29 @@
         </repository>
     </repositories>
 
+    <!-- Build Configuration -->
     <build>
         <plugins>
+            <!-- Maven Bundle Plugin for OSGi Bundling -->
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
+                        <!-- Jahia Module Dependency -->
                         <Jahia-Depends>default</Jahia-Depends>
-                        <Export-Package>org.jahiacommunity.modules.bootstrap.icons.initializers</Export-Package>
+
+                        <!-- Exported Packages -->
+                        <Export-Package>
+                            org.jahiacommunity.modules.bootstrap.icons.initializers,
+                            org.jahiacommunity.modules.bootstrap.icons
+                        </Export-Package>
+
+                        <!-- Dynamic Service Components -->
                         <_dsannotations>
-                            org.jahiacommunity.modules.bootstrap.icons.initializers.BootstrapIconInitializer,org.jahiacommunity.modules.bootstrap.icons.initializers.UsageInitializer
+                            org.jahiacommunity.modules.bootstrap.icons.initializers.BootstrapIconInitializer,
+                            org.jahiacommunity.modules.bootstrap.icons.initializers.UsageInitializer
                         </_dsannotations>
                     </instructions>
                 </configuration>

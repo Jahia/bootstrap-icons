@@ -58,7 +58,7 @@
             document.head.appendChild(style);
 
             var currentValue = value;
-            var activeTab = 'All';
+            var activeTab = 'All'; // resolved to actual category after data loads
 
             // Search
             var search = document.createElement('input');
@@ -202,6 +202,12 @@
             loadIcons(function (data) {
                 var total = Object.values(data).reduce(function (s, a) { return s + a.length; }, 0);
                 search.placeholder = 'Search ' + total + ' icons…';
+                if (currentValue) {
+                    var found = Object.keys(data).find(function (cat) {
+                        return data[cat].indexOf(currentValue) !== -1;
+                    });
+                    if (found) activeTab = found;
+                }
                 buildTabs(data);
                 render();
             });

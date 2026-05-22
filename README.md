@@ -24,6 +24,8 @@ Add the **Icon** component from the Bootstrap Icons category. Three properties a
 
 The `bootstrapIcon` field uses a custom Content Editor selector: a searchable visual picker with 2,050 icons organised into 13 categories (Arrows & Navigation, Files & Documents, People & Social, Communication, Media, Weather & Nature, Buildings & Places, Commerce & Finance, Technology, Shapes & UI, Security & System, Brands & Logos, Misc).
 
+![Icon picker](images/selector.png)
+
 - Click a **category tab** to filter by category
 - **Type** in the search box to search across all categories (resets to All automatically)
 - Click an icon to select it; **✕ clear** to deselect

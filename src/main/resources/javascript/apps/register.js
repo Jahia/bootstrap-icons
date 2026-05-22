@@ -6,7 +6,6 @@
     var iconsJsonUrl = contextPath + '/modules/bootstrap-icons/javascript/apps/icons-list.json';
     var iconsBaseUrl = contextPath + '/modules/bootstrap-icons/img/';
 
-    /** React element factory — key is 3rd arg, ref callback is 4th arg (same as addStuff). */
     function h(type, props, key, ref) {
         return {
             $$typeof: REACT_ELEMENT,
@@ -19,19 +18,13 @@
         };
     }
 
-    var iconsCache = null;
+    var dataCache = null;
 
     function loadIcons(cb) {
-        if (iconsCache) {
-            cb(iconsCache);
-            return;
-        }
+        if (dataCache) { cb(dataCache); return; }
         fetch(iconsJsonUrl)
             .then(function (r) { return r.json(); })
-            .then(function (list) {
-                iconsCache = list;
-                cb(list);
-            });
+            .then(function (data) { dataCache = data; cb(data); });
     }
 
     function BootstrapIconPickerCmp(props) {
@@ -44,24 +37,27 @@
 
             var style = document.createElement('style');
             style.textContent = [
-                '.bip-root { display:flex; flex-direction:column; gap:8px; font-family:sans-serif; }',
-                '.bip-search { padding:6px 8px; border:1px solid #ccc; border-radius:4px; font-size:13px; width:100%; box-sizing:border-box; }',
-                '.bip-bar { display:flex; align-items:center; min-height:20px; font-size:12px; color:#555; }',
-                '.bip-clear { color:#0078d4; cursor:pointer; margin-left:8px; }',
-                '.bip-grid { display:flex; flex-wrap:wrap; gap:6px; max-height:260px; overflow-y:auto; border:1px solid #eee; border-radius:4px; padding:8px; box-sizing:border-box; }',
-                '.bip-item { display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:3px; width:64px; height:64px; padding:4px; border:2px solid transparent; border-radius:4px; cursor:pointer; font-size:10px; color:#555; text-align:center; overflow:hidden; box-sizing:border-box; }',
-                '.bip-item:hover { border-color:#0078d4; background:#f0f6ff; }',
-                '.bip-item.selected { border-color:#0078d4; background:#e0f0ff; }',
-                '.bip-item img { width:24px; height:24px; }',
-                '.bip-more { width:100%; text-align:center; font-size:11px; color:#888; padding:4px; }'
-            ].join('\n');
+                '.bip-root{display:flex;flex-direction:column;gap:8px;font-family:sans-serif;}',
+                '.bip-search{padding:6px 8px;border:1px solid #ccc;border-radius:4px;font-size:13px;width:100%;box-sizing:border-box;}',
+                '.bip-bar{display:flex;align-items:center;min-height:18px;font-size:12px;color:#555;}',
+                '.bip-clear{color:#0078d4;cursor:pointer;margin-left:8px;font-size:11px;}',
+                '.bip-scroll{max-height:320px;overflow-y:auto;border:1px solid #eee;border-radius:4px;padding:8px;box-sizing:border-box;}',
+                '.bip-cat-label{width:100%;font-size:11px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:.05em;margin:8px 0 4px;padding-bottom:2px;border-bottom:1px solid #eee;}',
+                '.bip-cat-label:first-child{margin-top:0;}',
+                '.bip-grid{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;}',
+                '.bip-item{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;width:56px;height:56px;padding:3px;border:2px solid transparent;border-radius:4px;cursor:pointer;box-sizing:border-box;}',
+                '.bip-item:hover{border-color:#0078d4;background:#f0f6ff;}',
+                '.bip-item.selected{border-color:#0078d4;background:#ddeeff;}',
+                '.bip-item img{width:22px;height:22px;flex-shrink:0;}',
+                '.bip-item span{font-size:9px;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center;display:block;}'
+            ].join('');
             document.head.appendChild(style);
 
             var currentValue = value;
 
             var search = document.createElement('input');
             search.type = 'text';
-            search.placeholder = 'Search icons…';
+            search.placeholder = 'Search ' + (dataCache ? Object.values(dataCache).reduce(function(s,a){return s+a.length;},0) : '') + ' icons…';
             search.className = 'bip-search';
             container.appendChild(search);
 
@@ -72,46 +68,57 @@
             bar.appendChild(barLabel);
             container.appendChild(bar);
 
-            var grid = document.createElement('div');
-            grid.className = 'bip-grid';
-            container.appendChild(grid);
+            var scroll = document.createElement('div');
+            scroll.className = 'bip-scroll';
+            container.appendChild(scroll);
 
-            function renderGrid(filter) {
-                grid.innerHTML = '';
-                if (!iconsCache) return;
+            function selectItem(name, el) {
+                currentValue = name;
+                barLabel.textContent = 'Selected: ' + name;
+                updateClearBtn();
+                scroll.querySelectorAll('.bip-item.selected').forEach(function (e) { e.classList.remove('selected'); });
+                el.classList.add('selected');
+                if (onChange) onChange(name);
+            }
+
+            function buildItem(name) {
+                var item = document.createElement('div');
+                item.className = 'bip-item' + (name === currentValue ? ' selected' : '');
+                item.title = name;
+
+                var img = document.createElement('img');
+                img.src = iconsBaseUrl + name + '.svg';
+                img.alt = '';
+
+                var lbl = document.createElement('span');
+                lbl.textContent = name;
+
+                item.appendChild(img);
+                item.appendChild(lbl);
+                item.onclick = function () { selectItem(name, item); };
+                return item;
+            }
+
+            function renderAll(filter) {
+                scroll.innerHTML = '';
+                if (!dataCache) return;
                 var q = (filter || '').toLowerCase().trim();
-                var filtered = q ? iconsCache.filter(function (n) { return n.indexOf(q) !== -1; }) : iconsCache;
-                var shown = filtered.slice(0, 200);
-                shown.forEach(function (name) {
-                    var item = document.createElement('div');
-                    item.className = 'bip-item' + (name === currentValue ? ' selected' : '');
-                    item.title = name;
 
-                    var img = document.createElement('img');
-                    img.src = iconsBaseUrl + name + '.svg';
-                    img.alt = '';
+                Object.keys(dataCache).forEach(function (cat) {
+                    var icons = dataCache[cat];
+                    var filtered = q ? icons.filter(function (n) { return n.indexOf(q) !== -1; }) : icons;
+                    if (!filtered.length) return;
 
-                    var lbl = document.createElement('span');
-                    lbl.textContent = name.length > 10 ? name.slice(0, 9) + '…' : name;
+                    var catLabel = document.createElement('div');
+                    catLabel.className = 'bip-cat-label';
+                    catLabel.textContent = cat + ' (' + filtered.length + ')';
+                    scroll.appendChild(catLabel);
 
-                    item.appendChild(img);
-                    item.appendChild(lbl);
-                    item.onclick = function () {
-                        currentValue = name;
-                        barLabel.textContent = 'Selected: ' + name;
-                        updateClearBtn();
-                        grid.querySelectorAll('.bip-item.selected').forEach(function (el) { el.classList.remove('selected'); });
-                        item.classList.add('selected');
-                        if (onChange) onChange(name);
-                    };
-                    grid.appendChild(item);
+                    var grid = document.createElement('div');
+                    grid.className = 'bip-grid';
+                    filtered.forEach(function (name) { grid.appendChild(buildItem(name)); });
+                    scroll.appendChild(grid);
                 });
-                if (filtered.length > 200) {
-                    var more = document.createElement('div');
-                    more.className = 'bip-more';
-                    more.textContent = (filtered.length - 200) + ' more — refine your search';
-                    grid.appendChild(more);
-                }
             }
 
             function updateClearBtn() {
@@ -124,8 +131,7 @@
                         currentValue = '';
                         barLabel.textContent = '';
                         btn.remove();
-                        search.value = '';
-                        renderGrid('');
+                        renderAll(search.value);
                         if (onChange) onChange('');
                     };
                     bar.appendChild(btn);
@@ -135,10 +141,13 @@
             }
 
             updateClearBtn();
+            search.oninput = function () { renderAll(search.value); };
 
-            search.oninput = function () { renderGrid(search.value); };
-
-            loadIcons(function () { renderGrid(''); });
+            loadIcons(function (data) {
+                var total = Object.values(data).reduce(function(s,a){return s+a.length;},0);
+                search.placeholder = 'Search ' + total + ' icons…';
+                renderAll('');
+            });
         });
     }
 

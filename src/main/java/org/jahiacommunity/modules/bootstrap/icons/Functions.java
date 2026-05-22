@@ -17,20 +17,35 @@ public class Functions {
     private static final Logger logger = LoggerFactory.getLogger(Functions.class);
 
     public static String getSvg(String name, String style) {
+        return getSvg(name, style, false);
+    }
+
+    public static String getSvg(String name, String style, boolean decorative) {
         try {
             String html = IOUtils.toString(new ClassPathResource(String.format("img/%s.svg", name)).getInputStream());
-            //Element doc = Jsoup.parseBodyFragment(html);
             Document doc = Jsoup.parseBodyFragment(html);
             Element svgElement = doc.selectFirst("svg");
             svgElement.removeAttr("width").removeAttr("height");
-            if (! "auto".equals(style)) {
+            if (!"auto".equals(style)) {
                 svgElement.attr("style", style);
+            }
+            if (decorative) {
+                svgElement.attr("aria-hidden", "true");
+                svgElement.attr("focusable", "false");
+            } else {
+                String label = StringUtils.capitalize(name.replace('-', ' '));
+                svgElement.attr("role", "img");
+                svgElement.attr("aria-label", label);
             }
             return svgElement.outerHtml();
         } catch (IOException e) {
             logger.error("Could not get SVG", e);
             return StringUtils.EMPTY;
         }
+    }
+
+    public static String iconLabel(String name) {
+        return StringUtils.capitalize(name.replace('-', ' '));
     }
 
 }

@@ -5,6 +5,7 @@
 
 <c:set var="usage" value="${currentNode.properties.usage.string}"/>
 <c:set var="bootstrapIcon" value="${currentNode.properties.bootstrapIcon.string}"/>
+<c:set var="decorative" value="${currentNode.properties.decorative.boolean}"/>
 
 <c:if test="${jcr:isNodeType(currentNode,'bootstrapiconsmix:iconWidth')}">
     <c:set var="iconWidth" value="${currentNode.properties.iconWidth.string}"/>
@@ -25,15 +26,31 @@
 </c:if>
 <c:choose>
     <c:when test="${usage eq 'embedded'}">
-        ${bi:getSvg(bootstrapIcon,widthStyle)}
+        ${bi:getSvgA11y(bootstrapIcon,widthStyle,decorative)}
     </c:when>
     <c:when test="${usage eq 'sprite'}">
-        <svg class="bi" fill="currentColor" style="${widthStyle}" viewbox="0 0 16 16">
-            <use xlink:href="${url.currentModule}/icons/bootstrap-icons.svg#${bootstrapIcon}"/>
-        </svg>
+        <c:choose>
+            <c:when test="${decorative}">
+                <svg class="bi" fill="currentColor" style="${widthStyle}" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <use xlink:href="${url.currentModule}/icons/bootstrap-icons.svg#${bootstrapIcon}"/>
+                </svg>
+            </c:when>
+            <c:otherwise>
+                <svg class="bi" fill="currentColor" style="${widthStyle}" viewBox="0 0 16 16" role="img" aria-label="${bi:iconLabel(bootstrapIcon)}">
+                    <use xlink:href="${url.currentModule}/icons/bootstrap-icons.svg#${bootstrapIcon}"/>
+                </svg>
+            </c:otherwise>
+        </c:choose>
     </c:when>
     <c:when test="${usage eq 'external-image'}">
-        <img src="${url.currentModule}/img/${bootstrapIcon}.svg" style="${widthStyle}" alt="${bootstrapIcon}"/>
+        <c:choose>
+            <c:when test="${decorative}">
+                <img src="${url.currentModule}/img/${bootstrapIcon}.svg" style="${widthStyle}" alt=""/>
+            </c:when>
+            <c:otherwise>
+                <img src="${url.currentModule}/img/${bootstrapIcon}.svg" style="${widthStyle}" alt="${bi:iconLabel(bootstrapIcon)}"/>
+            </c:otherwise>
+        </c:choose>
     </c:when>
     <c:when test="${usage eq 'icon-font'}">
         <template:addResources type="css" resources="bootstrap-icons.css"/>
@@ -60,7 +77,14 @@
         <c:if test="${! empty fontStyle}">
             <c:set var="style"><c:out value=" "/>style="${fontStyle}"</c:set>
         </c:if>
-        <i class="bi-${bootstrapIcon}" viewBox="0 0 16 16" ${style}></i>
+        <c:choose>
+            <c:when test="${decorative}">
+                <i class="bi-${bootstrapIcon}" aria-hidden="true" focusable="false" ${style}></i>
+            </c:when>
+            <c:otherwise>
+                <i class="bi-${bootstrapIcon}" role="img" aria-label="${bi:iconLabel(bootstrapIcon)}" ${style}></i>
+            </c:otherwise>
+        </c:choose>
     </c:when>
     <c:otherwise>
         <c:if test="${renderContext.editMode}">

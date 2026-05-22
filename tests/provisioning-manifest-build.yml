@@ -1,0 +1,11 @@
+# bootstrap-icons — provisioning from locally built JAR (after mvn package)
+# Used by CI after the build step to pre-install the module before Cypress tests run.
+# The Cypress 01-setup spec can also deploy the JAR itself via the provisioning REST API.
+
+- addMavenRepository:
+    id: jahia-public
+    url: 'https://devtools.jahia.com/nexus/content/groups/public'
+
+- installOrUpgradeBundle: 'mvn:org.jahiacommunity.modules/bootstrap-icons'
+  autoStart: true
+  uninstallPreviousVersion: true

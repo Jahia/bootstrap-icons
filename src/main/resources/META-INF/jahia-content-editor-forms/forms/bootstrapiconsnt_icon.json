@@ -1,0 +1,9 @@
+{
+  "nodeType": "bootstrapiconsnt:icon",
+  "fields": [
+    {
+      "name": "bootstrapIcon",
+      "selectorType": "BootstrapIconPicker"
+    }
+  ]
+}

@@ -16,3 +16,4 @@
 [bootstrapiconsnt:icon] > jnt:content, bootstrapiconsmix:component
  - bootstrapIcon (string, choicelist[bootstrapIconInitializer,moduleImage='svg']) indexed=no
  - usage (string, choicelist[usageInitializer,resourceBundle]) = 'embedded' autocreated indexed=no
+ - decorative (boolean) = false autocreated indexed=no

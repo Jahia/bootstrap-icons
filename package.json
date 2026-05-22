@@ -1,0 +1,12 @@
+{
+  "name": "bootstrap-icons-jahia",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Fetches bootstrap-icons assets for packaging into the Jahia OSGi bundle.",
+  "dependencies": {
+    "bootstrap-icons": "1.11.3"
+  },
+  "scripts": {
+    "postinstall": "node copy-bootstrap-icons.js"
+  }
+}

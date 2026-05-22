@@ -15,4 +15,16 @@
         <function-class>org.jahiacommunity.modules.bootstrap.icons.Functions</function-class>
         <function-signature>java.lang.String getSvg(java.lang.String,java.lang.String)</function-signature>
     </function>
+    <function>
+        <description>Get SVG with decorative flag</description>
+        <name>getSvgA11y</name>
+        <function-class>org.jahiacommunity.modules.bootstrap.icons.Functions</function-class>
+        <function-signature>java.lang.String getSvg(java.lang.String,java.lang.String,boolean)</function-signature>
+    </function>
+    <function>
+        <description>Convert icon slug to human-readable label</description>
+        <name>iconLabel</name>
+        <function-class>org.jahiacommunity.modules.bootstrap.icons.Functions</function-class>
+        <function-signature>java.lang.String iconLabel(java.lang.String)</function-signature>
+    </function>
 </taglib>

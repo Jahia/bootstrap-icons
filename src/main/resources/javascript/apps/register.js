@@ -4,7 +4,7 @@
     var REACT_ELEMENT = Symbol.for('react.element');
     var contextPath = window.contextJsParameters ? window.contextJsParameters.contextPath : '';
     var iconsJsonUrl = contextPath + '/modules/bootstrap-icons/javascript/apps/icons-list.json';
-    var iconsBaseUrl = contextPath + '/modules/bootstrap-icons/img/';
+    var spriteUrl = contextPath + '/modules/bootstrap-icons/icons/bootstrap-icons.svg';
 
     function h(type, props, key, ref) {
         return {
@@ -52,7 +52,7 @@
                 '.bip-item{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;width:56px;height:56px;padding:3px;border:2px solid transparent;border-radius:4px;cursor:pointer;box-sizing:border-box;}',
                 '.bip-item:hover{border-color:#0078d4;background:#f0f6ff;}',
                 '.bip-item.selected{border-color:#0078d4;background:#ddeeff;}',
-                '.bip-item img{width:22px;height:22px;flex-shrink:0;}',
+                '.bip-item svg{width:22px;height:22px;flex-shrink:0;}',
                 '.bip-item span{font-size:9px;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center;display:block;}'
             ].join('');
             document.head.appendChild(style);
@@ -147,14 +147,16 @@
                 item.className = 'bip-item' + (name === currentValue ? ' selected' : '');
                 item.title = name;
 
-                var img = document.createElement('img');
-                img.src = iconsBaseUrl + name + '.svg';
-                img.alt = '';
+                var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('aria-hidden', 'true');
+                var use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+                use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', spriteUrl + '#' + name);
+                svg.appendChild(use);
 
                 var lbl = document.createElement('span');
                 lbl.textContent = name;
 
-                item.appendChild(img);
+                item.appendChild(svg);
                 item.appendChild(lbl);
                 item.onclick = function () {
                     currentValue = name;

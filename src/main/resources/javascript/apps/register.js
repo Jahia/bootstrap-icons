@@ -187,7 +187,15 @@
             }
 
             updateClearBtn();
-            search.oninput = function () { render(); };
+            search.oninput = function () {
+                if (search.value && activeTab !== 'All') {
+                    activeTab = 'All';
+                    Object.keys(tabEls).forEach(function (k) {
+                        tabEls[k].classList.toggle('active', k === 'All');
+                    });
+                }
+                render();
+            };
 
             loadIcons(function (data) {
                 var total = Object.values(data).reduce(function (s, a) { return s + a.length; }, 0);

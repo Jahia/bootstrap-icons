@@ -1,88 +1,147 @@
 # Bootstrap Icons
 
-> This is a Jahia 8 implementation of the free, high-quality, open-source icon library with over 2,000 icons. Icons can be embed, used as an external SVGs image or SVG sprite, or as a web font.
+> Jahia 8 module providing the [Bootstrap Icons](https://icons.getbootstrap.com/) library (2,050+ icons).
+> Supports four rendering modes: embedded SVG, SVG sprite, external image, and icon font.
+> Fully WCAG 2.1 AA compliant.
 
 ## Installation
-Please read the dedicated tutorial on https://academy.jahia.com/training-kb/tutorials/administrators/installing-a-module and select the Bootstrap Icons module from the store.
 
-## Usage 
+Install from the Jahia Store — see the [tutorial](https://academy.jahia.com/training-kb/tutorials/administrators/installing-a-module).
 
-To add a Bootstrap icon, click on the Bootstrap icons category, then choose the *Icon* component
-![alt_text](images/pick-icon-component.png "Pick icon")
+---
 
-Once it's done you will find 3 properties:
+## Usage
 
-| Label | Name | Description | Default | 
-| --- | --- | --- | --- |  
-|**Icon**|`bootstrapIcon`|Choose an icon from the list|
-|**Usage**|`usage`|Choose the way to display the icon. This can be Embedded, External image, Icon font, or Sprite|Embedded|
-|**Image width** or<br>**Font size**|`iconWidth` or<br>`fontSize`|Find a way to choose the width of your image. For Icon font usage, you will choose the font size||
+Add the **Icon** component from the Bootstrap Icons category. Three properties are available:
 
-### Embedded
+| Label | Property | Description | Default |
+|---|---|---|---|
+| **Icon** | `bootstrapIcon` | Pick an icon using the visual picker | — |
+| **Usage** | `usage` | Rendering mode: `embedded`, `sprite`, `external-image`, `icon-font` | `embedded` |
+| **Decorative** | `decorative` | `true` → `aria-hidden="true"` (decorative). `false` → `role="img" aria-label="…"` (informative) | `false` |
 
-This will embed your icons within the HTML of your page (as opposed to an external image file). 
-It will use a custom tag `bi:getSvg` that take 2 arguments: the first one is the name of the icon, and the second is the chosen width. The width can be one of these values:  auto, 100%, 75%, 50%, 25%
+### Icon Picker
 
-```
-${bi:getSvg(bootstrapIcon,widthStyle)}
-```
-The function used will load the SVG file from the bundle, it will remove the width attributes, and it will add a style attribute with the picked width.
+The `bootstrapIcon` field uses a custom Content Editor selector: a searchable visual picker with 2,050 icons organised into 13 categories (Arrows & Navigation, Files & Documents, People & Social, Communication, Media, Weather & Nature, Buildings & Places, Commerce & Finance, Technology, Shapes & UI, Security & System, Brands & Logos, Misc).
 
-If the value is `auto` then the weidth / height attributes will be removed.
+- Click a **category tab** to filter by category
+- **Type** in the search box to search across all categories (resets to All automatically)
+- Click an icon to select it; **✕ clear** to deselect
 
-As an example here is the result if the icon chooses is the Arrow left width a width of 50%:
-````html
-<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16" style="width:50%;height:auto"> 
-   <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path> 
-</svg>
-````
+Icons are rendered from the SVG sprite (single HTTP request, browser-cached).
 
-### External image
+---
 
-When the external image usage is picked, the it will generate a standard IMG tag like this
+## Rendering modes
+
+### Embedded SVG
+
+Inlines the SVG directly into the page HTML. Inherits color via `fill="currentColor"`.
+
 ```html
-<img src="/modules/bootstrap-icons/img/arrow-left.svg" style="width:50%;height:auto" alt="arrow-left">
+<!-- informative -->
+<svg class="bi bi-arrow-left" role="img" aria-label="Arrow left" viewBox="0 0 16 16" fill="currentColor">…</svg>
+
+<!-- decorative -->
+<svg class="bi bi-arrow-left" aria-hidden="true" focusable="false" viewBox="0 0 16 16" fill="currentColor">…</svg>
 ```
 
-### Icon font
+### SVG Sprite
 
-If the icon font has been selected, a link to the bootstrap-icons.css will be added in the header of your page, and a `i` tag will be add in your page with the dedicatd class name.
-The width will be used as a font-size style based on `em`:
+References the bundled sprite file. One network request, fully cacheable.
 
-| Size | Font-size |
-| --- | --- | 
-| Extra small| .75em |
-| Small| .875em |
-| Large| .33333em |
-
-This code will be set in the head of your page
 ```html
-<link id="staticAssetCSS1" rel="stylesheet" href="/modules/bootstrap-icons/css/bootstrap-icons.css" media="screen" type="text/css"/>
-```
-And here is an example for the arrow-left icon with a small font size:
-```html
-<i class="bi-arrow-left" viewBox="0 0 16 16" style="font-size:.875em"></i>
-```
-
-### Sprite
-
-Use the SVG sprite to insert any icon through the <use> element. 
-Use the icon’s filename as the fragment identifier (e.g., toggles is #toggles). SVG sprites allow you to reference an external file similar to an `<img>` element, but with the power of currentColor for easy theming.
-
-Here is an example of sprite usage for the arrow-left icon with a width of 50%:
-```html
-<svg class="bi" fill="currentColor" style="width:50%;height:auto">
+<svg class="bi" role="img" aria-label="Arrow left" fill="currentColor" style="width:50%;height:auto">
     <use xlink:href="/modules/bootstrap-icons/icons/bootstrap-icons.svg#arrow-left"/>
 </svg>
 ```
 
-### Displaying Icon Font Without Utilizing the Icon Component
+### External image
 
-If you wish to utilize the font method for displaying icons without employing the icon component, for example, if you want to directly use a tag like `<i class="bi bi-file-earmark-pdf"></i>` within a template or a JSP view, then you'll need to add a dependency (Jahia-Depends) to the bootstrap-icons in your `pom.xml` file. 
+Standard `<img>` tag pointing to the individual SVG file.
 
-Additionally, include the following line in your template:
+```html
+<!-- informative -->
+<img src="/modules/bootstrap-icons/img/arrow-left.svg" alt="Arrow left" style="width:50%;height:auto">
+
+<!-- decorative -->
+<img src="/modules/bootstrap-icons/img/arrow-left.svg" alt="" style="width:50%;height:auto">
+```
+
+### Icon font
+
+Injects `bootstrap-icons.css` into the page `<head>` and renders an `<i>` tag.
+
+```html
+<link rel="stylesheet" href="/modules/bootstrap-icons/css/bootstrap-icons.css"/>
+<i class="bi-arrow-left" aria-hidden="true" focusable="false"></i>
+```
+
+---
+
+## Accessibility (WCAG 2.1 AA)
+
+The **Decorative** property controls ARIA output for all four rendering modes:
+
+| Mode | Informative (`decorative=false`) | Decorative (`decorative=true`) |
+|---|---|---|
+| Embedded SVG | `role="img" aria-label="Arrow left"` | `aria-hidden="true" focusable="false"` |
+| Sprite | `role="img" aria-label="Arrow left"` | `aria-hidden="true" focusable="false"` |
+| External image | `alt="Arrow left"` | `alt=""` |
+| Icon font | `role="img" aria-label="Arrow left"` | `aria-hidden="true" focusable="false"` |
+
+The accessible label is auto-generated from the icon slug: `arrow-left` → `Arrow left`.
+
+---
+
+## Using the icon font without the Icon component
+
+To use `<i class="bi bi-file-earmark-pdf">` directly in a template, add a `Jahia-Depends` on `bootstrap-icons` in your `pom.xml` and include:
 
 ```html
 <template:addResources type="css" resources="bootstrap-icons.css"/>
 ```
 
+---
+
+## Development
+
+### Prerequisites
+
+- Java 11+, Maven 3.6+
+- Node.js 20.x (managed by `frontend-maven-plugin` — no local install required)
+
+### Build
+
+```bash
+mvn clean package
+```
+
+The `frontend-maven-plugin` runs `npm install` during the `initialize` phase, which triggers the `postinstall` script (`copy-bootstrap-icons.js`). This copies SVGs, the sprite, CSS/fonts, and generates `icons-list.json` from `node_modules/bootstrap-icons`.
+
+### Asset pipeline
+
+`copy-bootstrap-icons.js` copies from `node_modules/bootstrap-icons` into `src/main/resources/`:
+
+| Source | Destination | Used by |
+|---|---|---|
+| `icons/*.svg` | `img/` | External image mode |
+| `bootstrap-icons.svg` | `icons/` | Sprite mode + icon picker |
+| `font/` | `css/` | Icon font mode |
+| _(generated)_ | `javascript/apps/icons-list.json` | Content Editor icon picker |
+
+All generated assets are gitignored.
+
+---
+
+## Cypress tests
+
+See [`tests/README.md`](tests/README.md) for full setup instructions.
+
+```bash
+cd tests
+yarn install --ignore-engines
+yarn e2e:ci
+```
+
+Tests cover: module deployment, all four rendering modes, and WCAG 2.1 AA accessibility for informative and decorative icons.

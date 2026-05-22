@@ -3,6 +3,8 @@
 > Jahia 8 module providing the [Bootstrap Icons](https://icons.getbootstrap.com/) library (2,050+ icons).
 > Supports four rendering modes: embedded SVG, SVG sprite, external image, and icon font.
 > Fully WCAG 2.1 AA compliant.
+>
+> **Embedded library version:** Bootstrap Icons **1.11.3**
 
 ## Installation
 

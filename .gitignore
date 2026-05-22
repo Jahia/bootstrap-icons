@@ -16,4 +16,5 @@ src/main/resources/css/bootstrap-icons.css
 src/main/resources/css/bootstrap-icons.min.css
 src/main/resources/css/bootstrap-icons.scss
 src/main/resources/css/fonts/
+src/main/resources/javascript/apps/icons-list.json
 /tests/.env

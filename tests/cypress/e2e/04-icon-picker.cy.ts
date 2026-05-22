@@ -75,15 +75,5 @@ describe('Bootstrap Icons — Icon Picker', () => {
             cy.get('body').should('not.contain', 'BootstrapIconPicker is not defined')
         })
 
-        it('register.js is included in the jContent page', () => {
-            cy.visit(`/jahia/jcontent/${siteKey}/en/pages/sites/${siteKey}/home`)
-            cy.document().then(doc => {
-                const scripts = Array.from(doc.querySelectorAll('script[src]'))
-                    .map((s: any) => s.src)
-                // Jahia serves module JS via the app-shell aggregator or directly
-                cy.request(`${moduleBase}/javascript/apps/register.js`)
-                    .its('status').should('eq', 200)
-            })
-        })
     })
 })

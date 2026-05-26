@@ -63,9 +63,8 @@ describe('Bootstrap Icons — Icon Picker', () => {
     })
 
     context('Content Editor integration', () => {
-        before(() => {
-            cy.login()
-        })
+        before(() => cy.login())
+        after(() => cy.logout())
 
         it('jContent loads without JS errors from bootstrap-icons', () => {
             cy.visit(`/jahia/jcontent/${siteKey}/en/pages/sites/${siteKey}/home`)

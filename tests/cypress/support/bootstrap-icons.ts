@@ -1,8 +1,8 @@
-import {createSite as jahiaCreateSite, deleteSite as jahiaDeleteSite, enableModule} from '@jahia/cypress'
+import {createSite as jahiaCreateSite, deleteSite as jahiaDeleteSite, enableModule, publishAndWaitJobEnding} from '@jahia/cypress'
 
 export const siteKey = 'bootstrapiconstest'
 export const testIconName = 'arrow-left'
-export const testIconLabel = 'Arrow left'
+export const testIconLabel = 'Arrow Left'
 
 export const pageUrl = (pageName: string) =>
     `/cms/render/live/en/sites/${siteKey}/home/${pageName}.html`
@@ -59,7 +59,8 @@ export const createTestSite = () => {
     jahiaCreateSite(siteKey, {
         templateSet: 'empty-templates',
         serverName: 'localhost',
-        locale: 'en'
+        locale: 'en',
+        languages: 'en,fr'
     })
     enableModule('bootstrap-icons', siteKey)
 }
@@ -77,6 +78,7 @@ export const createTestPage = (pageName: string) => {
             primaryNodeType: 'jnt:page',
             properties: [
                 {name: 'jcr:title', value: pageName, language: 'en'},
+                {name: 'jcr:title', value: pageName, language: 'fr'},
                 {name: 'j:templateName', value: 'empty'}
             ],
             children: [{name: 'pagecontent', primaryNodeType: 'jnt:contentList'}]
@@ -100,17 +102,8 @@ export const createIconNode = (pageName: string, nodeName: string, usage: string
     })
 }
 
-export const publishNode = (pathOrId: string, options: {includeSubTree?: boolean; waitMs?: number} = {}) => {
-    cy.apollo({
-        mutationFile: 'graphql/jcr/mutation/publishNode.graphql',
-        variables: {
-            pathOrId,
-            languages: ['en'],
-            publishSubNodes: true,
-            includeSubTree: options.includeSubTree ?? true
-        }
-    })
-    cy.wait(options.waitMs ?? 3000)
+export const publishNode = (pathOrId: string, options: {languages?: string[]} = {}) => {
+    publishAndWaitJobEnding(pathOrId, options.languages ?? ['en', 'fr'])
 }
 
 export const flushHtmlCache = () => {

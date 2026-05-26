@@ -32,7 +32,11 @@
         var onChange = props.onChange;
 
         return h('div', {className: 'bip-root'}, 'bip-root', function (container) {
-            if (!container || container._bip_init) return;
+            if (!container) return;
+            if (container._bip_init) {
+                if (container._bip_setValue) container._bip_setValue(value);
+                return;
+            }
             container._bip_init = true;
 
             var style = document.createElement('style');
@@ -189,6 +193,17 @@
             }
 
             updateClearBtn();
+
+            container._bip_setValue = function(v) {
+                if (v === currentValue) return;
+                currentValue = v;
+                barLabel.textContent = v ? 'Selected: ' + v : '';
+                updateClearBtn();
+                scroll.querySelectorAll('.bip-item').forEach(function(el) {
+                    el.classList.toggle('selected', el.title === v);
+                });
+            };
+
             search.oninput = function () {
                 if (search.value && activeTab !== 'All') {
                     activeTab = 'All';

@@ -1,4 +1,4 @@
-import {pageUrl, testIconName} from '../support/bootstrap-icons'
+import {pageUrl, testIconName, siteKey} from '../support/bootstrap-icons'
 
 describe('Bootstrap Icons — Render', () => {
     context('Embedded SVG', () => {
@@ -62,6 +62,25 @@ describe('Bootstrap Icons — Render', () => {
                     expect(res.body, 'aggregated CSS bundle should contain bootstrap-icons font-face rule').to.match(/bi-arrow-left|bootstrap-icons/)
                 })
             })
+        })
+    })
+
+    context('FR locale', () => {
+        it('page returns 200 in FR', () => {
+            cy.request({
+                url: `/cms/render/live/fr/sites/${siteKey}/home/page-informative.html`,
+                failOnStatusCode: false
+            }).its('status').should('eq', 200)
+        })
+
+        it('inline SVG renders in FR', () => {
+            cy.request(`/cms/render/live/fr/sites/${siteKey}/home/page-informative.html`)
+                .its('body').should('contain', '<svg')
+        })
+
+        it('icon-font renders in FR', () => {
+            cy.request(`/cms/render/live/fr/sites/${siteKey}/home/page-informative.html`)
+                .its('body').should('contain', `class="bi-${testIconName}"`)
         })
     })
 })

@@ -1,6 +1,7 @@
 package org.jahiacommunity.modules.bootstrap.icons;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +26,12 @@ public class Functions {
             String html = IOUtils.toString(new ClassPathResource(String.format("img/%s.svg", name)).getInputStream());
             Document doc = Jsoup.parseBodyFragment(html);
             Element svgElement = doc.selectFirst("svg");
+            if (svgElement == null) {
+                logger.warn("No <svg> root found in {}", name);
+                return StringUtils.EMPTY;
+            }
             svgElement.removeAttr("width").removeAttr("height");
-            if (!"auto".equals(style)) {
+            if (!"auto".equals(style) && !StringUtils.isEmpty(style)) {
                 svgElement.attr("style", style);
             }
             if (decorative) {
@@ -45,7 +50,7 @@ public class Functions {
     }
 
     public static String iconLabel(String name) {
-        return StringUtils.capitalize(name.replace('-', ' '));
+        return WordUtils.capitalize(name.replace('-', ' '));
     }
 
 }

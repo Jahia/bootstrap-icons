@@ -23,12 +23,13 @@ describe('Bootstrap Icons — Accessibility (WCAG 2.1 AA)', () => {
         context('Sprite SVG', () => {
             it('has role="img"', () => {
                 cy.visit(pageUrl('page-informative'))
-                cy.get('svg.bi').should('have.attr', 'role', 'img')
+                // svg.bi:not(.bi-arrow-left) targets sprite only (embedded has extra bi-arrow-left class)
+                cy.get('svg.bi[role="img"]').not('.bi-arrow-left').should('have.attr', 'role', 'img')
             })
 
             it(`has aria-label="${testIconLabel}"`, () => {
                 cy.visit(pageUrl('page-informative'))
-                cy.get('svg.bi').should('have.attr', 'aria-label', testIconLabel)
+                cy.get('svg.bi[role="img"]').not('.bi-arrow-left').should('have.attr', 'aria-label', testIconLabel)
             })
         })
 

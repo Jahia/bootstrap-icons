@@ -5,6 +5,9 @@ export default defineConfig({
     reporterOptions: {
         configFile: 'reporter-config.json'
     },
+    defaultCommandTimeout: 10000,
+    requestTimeout: 300000,
+    responseTimeout: 300000,
     screenshotsFolder: './results/screenshots',
     video: true,
     videosFolder: './results/videos',

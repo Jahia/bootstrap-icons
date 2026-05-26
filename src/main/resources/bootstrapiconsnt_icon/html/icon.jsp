@@ -24,6 +24,9 @@
         </c:when>
     </c:choose>
 </c:if>
+<c:if test="${not empty widthStyle}">
+    <c:set var="widthStyleAttr"><c:out value=" "/>style="${widthStyle}"</c:set>
+</c:if>
 <c:choose>
     <c:when test="${usage eq 'embedded'}">
         ${bi:getSvgA11y(bootstrapIcon,widthStyle,decorative)}
@@ -31,12 +34,12 @@
     <c:when test="${usage eq 'sprite'}">
         <c:choose>
             <c:when test="${decorative}">
-                <svg class="bi" fill="currentColor" style="${widthStyle}" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <svg class="bi" fill="currentColor"${widthStyleAttr} viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                     <use xlink:href="${url.currentModule}/icons/bootstrap-icons.svg#${bootstrapIcon}"/>
                 </svg>
             </c:when>
             <c:otherwise>
-                <svg class="bi" fill="currentColor" style="${widthStyle}" viewBox="0 0 16 16" role="img" aria-label="${bi:iconLabel(bootstrapIcon)}">
+                <svg class="bi" fill="currentColor"${widthStyleAttr} viewBox="0 0 16 16" role="img" aria-label="${bi:iconLabel(bootstrapIcon)}">
                     <use xlink:href="${url.currentModule}/icons/bootstrap-icons.svg#${bootstrapIcon}"/>
                 </svg>
             </c:otherwise>
@@ -45,10 +48,10 @@
     <c:when test="${usage eq 'external-image'}">
         <c:choose>
             <c:when test="${decorative}">
-                <img src="${url.currentModule}/img/${bootstrapIcon}.svg" style="${widthStyle}" alt=""/>
+                <img src="${url.currentModule}/img/${bootstrapIcon}.svg"${widthStyleAttr} alt=""/>
             </c:when>
             <c:otherwise>
-                <img src="${url.currentModule}/img/${bootstrapIcon}.svg" style="${widthStyle}" alt="${bi:iconLabel(bootstrapIcon)}"/>
+                <img src="${url.currentModule}/img/${bootstrapIcon}.svg"${widthStyleAttr} alt="${bi:iconLabel(bootstrapIcon)}"/>
             </c:otherwise>
         </c:choose>
     </c:when>
